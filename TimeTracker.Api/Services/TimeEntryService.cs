@@ -21,9 +21,40 @@ namespace TimeTracker.Api.Services
             return result.Adapt<List<TimeEntryResponse>>();
         }
 
+        public List<TimeEntryResponse>? DeleteTimeEntry(Guid id)
+        {
+            var result = _timeEntryRepository.DeleteTimeEntry(id);
+            if (result is null)
+            {
+                return null;
+            }
+            return result.Adapt<List<TimeEntryResponse>>();
+        }
+
         public List<TimeEntryResponse> GetAllTimeEntries()
         {
             var result = _timeEntryRepository.GetAllTimeEntries();
+            return result.Adapt<List<TimeEntryResponse>>();
+        }
+
+        public TimeEntryResponse? GetTimeEntryById(Guid id)
+        {
+            var result = _timeEntryRepository.GetTimeEntryById(id);
+            if (result is null)
+            {
+                return null;
+            }
+            return result.Adapt<TimeEntryResponse>();
+        }
+
+        public List<TimeEntryResponse>? UpdateTimeEntry(Guid id, TimeEntryUpdateRequest request)
+        {
+            var updatedEntry = request.Adapt<TimeEntry>();
+            var result = _timeEntryRepository.UpdateTimeEntry(id, updatedEntry);
+            if (result is null)
+            {
+                return null;
+            }
             return result.Adapt<List<TimeEntryResponse>>();
         }
     }
