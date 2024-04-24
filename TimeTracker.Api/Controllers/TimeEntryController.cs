@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TimeTracker.Shared.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using TimeTracker.Api.Repositories;
+using TimeTracker.Api.Services;
+using TimeTracker.Shared.Models.TimeEntry;
 
 namespace TimeTracker.Api.Controllers
 {
@@ -8,27 +9,23 @@ namespace TimeTracker.Api.Controllers
     [ApiController]
     public class TimeEntryController : ControllerBase
     {
-        private static List<TimeEntry> _timeEntries = new List<TimeEntry>
+        private readonly ITimeEntryService _timeEntryService;
+
+        public TimeEntryController(ITimeEntryService service)
         {
-            new TimeEntry
-            {
-                Id = Guid.NewGuid().ToString(),
-                Project = "Time Tracker App",
-                End = DateTime.Now.AddHours(1),
-            }
-        };
+            _timeEntryService = service;
+        }
 
         [HttpGet]
-        public ActionResult<List<TimeEntry>> GetAllTimeEntries()
+        public ActionResult<List<TimeEntryResponse>> GetAllTimeEntries()
         {
-            return Ok(_timeEntries);
+            return Ok(_timeEntryService.GetAllTimeEntries());
         }
 
         [HttpPost]
-        public ActionResult<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
+        public ActionResult<List<TimeEntryResponse>> CreateTimeEntry(TimeEntryCreateRequest timeEntryRequest)
         {
-            _timeEntries.Add(timeEntry);
-            return Ok(_timeEntries);
+            return Ok(_timeEntryService.CreateTimeEntry(timeEntryRequest));
         }
     }
 }
