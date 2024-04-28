@@ -44,7 +44,7 @@ namespace TimeTracker.Api.Repositories
             var dbTimeEntry = await _context.TimeEntries.FindAsync(id.ToString());
             if (dbTimeEntry is null)
             {
-                return null;
+                throw new EntityNotFoundException($"Entity with id:{id} not found.");
             }
 
             dbTimeEntry.Project = timeEntry.Project;
