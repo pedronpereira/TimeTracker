@@ -15,15 +15,15 @@ namespace TimeTracker.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<TimeEntryResponse>> GetAllTimeEntries()
+        public async Task<ActionResult<List<TimeEntryResponse>>> GetAllTimeEntries()
         {
-            return Ok(_timeEntryService.GetAllTimeEntries());
+            return Ok(await _timeEntryService.GetAllTimeEntries());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<TimeEntryResponse> GetTimeEntry(Guid id)
+        public async Task<ActionResult<TimeEntryResponse>> GetTimeEntry(Guid id)
         {
-            var result = _timeEntryService.GetTimeEntryById(id);
+            var result = await _timeEntryService.GetTimeEntryById(id);
             if (result is null)
             {
                 return NotFound("TimeEntry with the given ID was not found");

@@ -38,9 +38,9 @@
             return _timeEntries.Values.ToList();
         }
 
-        public List<TimeEntry> GetAllTimeEntries()
+        public async Task<List<TimeEntry>> GetAllTimeEntries()
         {
-            return _timeEntries.Values.ToList();
+            return await _context.TimeEntries.ToListAsync();
         }
 
         public List<TimeEntry> UpdateTimeEntry(Guid id, TimeEntry timeEntry)
@@ -53,13 +53,9 @@
             return _timeEntries.Values.ToList();
         }
 
-        TimeEntry? ITimeEntryRepository.GetTimeEntryById(Guid id)
+        public async Task<TimeEntry?> GetTimeEntryById(Guid id)
         {
-            if (!_timeEntries.ContainsKey(id.ToString()))
-            {
-                return null;
-            }
-            return _timeEntries[id.ToString()];
+            return await _context.TimeEntries.FindAsync(id.ToString());
         }
     }
 }
