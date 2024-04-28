@@ -44,10 +44,10 @@ namespace TimeTracker.Api.Services
             return result.Adapt<TimeEntryResponse>();
         }
 
-        public List<TimeEntryResponse>? UpdateTimeEntry(Guid id, TimeEntryUpdateRequest request)
+        public async Task<List<TimeEntryResponse>?> UpdateTimeEntry(Guid id, TimeEntryUpdateRequest request)
         {
             var updatedEntry = request.Adapt<TimeEntry>();
-            var result = _timeEntryRepository.UpdateTimeEntry(id, updatedEntry);
+            var result = await _timeEntryRepository.UpdateTimeEntry(id, updatedEntry);
             if (result is null)
             {
                 return null;

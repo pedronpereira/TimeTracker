@@ -38,9 +38,9 @@ namespace TimeTracker.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<List<TimeEntryResponse>> UpdateTimeEntry(Guid id, TimeEntryUpdateRequest timeEntryRequest)
+        public async Task<ActionResult<List<TimeEntryResponse>>> UpdateTimeEntry(Guid id, TimeEntryUpdateRequest timeEntryRequest)
         {
-            var result = _timeEntryService.UpdateTimeEntry(id, timeEntryRequest);
+            var result = await _timeEntryService.UpdateTimeEntry(id, timeEntryRequest);
             if (result is null)
             {
                 return NotFound("TimeEntry with the given ID was not found");

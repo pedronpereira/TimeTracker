@@ -6,7 +6,7 @@
 
         Task<List<TimeEntryResponse>> CreateTimeEntry(TimeEntryCreateRequest timeEntryRequest);
 
-        List<TimeEntryResponse>? UpdateTimeEntry(Guid id, TimeEntryUpdateRequest timeEntryRequest);
+        Task<List<TimeEntryResponse>?> UpdateTimeEntry(Guid id, TimeEntryUpdateRequest timeEntryRequest);
         List<TimeEntryResponse>? DeleteTimeEntry(Guid id);
         Task<TimeEntryResponse?> GetTimeEntryById(Guid id);
     }

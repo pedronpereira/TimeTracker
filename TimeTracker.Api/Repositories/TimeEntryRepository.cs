@@ -1,4 +1,6 @@
-﻿namespace TimeTracker.Api.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace TimeTracker.Api.Repositories
 {
     public class TimeEntryRepository : ITimeEntryRepository
     {
@@ -43,14 +45,22 @@
             return await _context.TimeEntries.ToListAsync();
         }
 
-        public List<TimeEntry> UpdateTimeEntry(Guid id, TimeEntry timeEntry)
+        public async Task<List<TimeEntry>> UpdateTimeEntry(Guid id, TimeEntry timeEntry)
         {
-            if (!_timeEntries.ContainsKey(id.ToString()))
+            var dbTimeEntry = await _context.TimeEntries.FindAsync(id.ToString());
+            if (dbTimeEntry is null)
             {
                 return null;
             }
-            _timeEntries[id.ToString()] = timeEntry;
-            return _timeEntries.Values.ToList();
+
+            dbTimeEntry.Project = timeEntry.Project;
+            dbTimeEntry.Start = timeEntry.Start;
+            dbTimeEntry.End =   timeEntry.End;
+            dbTimeEntry.DateUpdated = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return await GetAllTimeEntries();
         }
 
         public async Task<TimeEntry?> GetTimeEntryById(Guid id)
