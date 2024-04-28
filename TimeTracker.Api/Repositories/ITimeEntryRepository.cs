@@ -4,7 +4,7 @@
     {
         List<TimeEntry> GetAllTimeEntries();
         TimeEntry? GetTimeEntryById(Guid id);
-        List<TimeEntry> CreateTimeEntry(TimeEntry timeEntry);
+        Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry);
         List<TimeEntry>? UpdateTimeEntry(Guid id, TimeEntry timeEntry);
         List<TimeEntry>? DeleteTimeEntry(Guid id);
     }

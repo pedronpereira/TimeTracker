@@ -11,10 +11,10 @@ namespace TimeTracker.Api.Services
             _timeEntryRepository = timeEntryRepository;
         }
 
-        public List<TimeEntryResponse> CreateTimeEntry(TimeEntryCreateRequest request)
+        public async Task<List<TimeEntryResponse>> CreateTimeEntry(TimeEntryCreateRequest request)
         {
             var newEntry = request.Adapt<TimeEntry>();
-            var result = _timeEntryRepository.CreateTimeEntry(newEntry);
+            var result = await _timeEntryRepository.CreateTimeEntry(newEntry);
             return result.Adapt<List<TimeEntryResponse>>();
         }
 

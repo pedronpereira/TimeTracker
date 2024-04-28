@@ -2,6 +2,13 @@
 {
     public class TimeEntryRepository : ITimeEntryRepository
     {
+        private readonly DataContext _context;
+
+        public TimeEntryRepository(DataContext context)
+        {
+            _context = context;
+        }
+
         private static Dictionary<string, TimeEntry> _timeEntries = new List<TimeEntry>
         {
             new TimeEntry
@@ -12,11 +19,13 @@
             }
         }.ToDictionary(x => x.Id, x => x);
 
-        public List<TimeEntry> CreateTimeEntry(TimeEntry timeEntry)
+        public async Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
         {
             timeEntry.Id = Guid.NewGuid().ToString();
-            _timeEntries.Add(timeEntry.Id, timeEntry);
-            return _timeEntries.Values.ToList();
+            _context.TimeEntries.Add(timeEntry);
+            await _context.SaveChangesAsync();
+
+            return await _context.TimeEntries.ToListAsync();
         }
 
         public List<TimeEntry>? DeleteTimeEntry(Guid id)
