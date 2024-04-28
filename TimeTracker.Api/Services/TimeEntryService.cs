@@ -18,9 +18,9 @@ namespace TimeTracker.Api.Services
             return result.Adapt<List<TimeEntryResponse>>();
         }
 
-        public List<TimeEntryResponse>? DeleteTimeEntry(Guid id)
+        public async Task<List<TimeEntryResponse>?> DeleteTimeEntry(Guid id)
         {
-            var result = _timeEntryRepository.DeleteTimeEntry(id);
+            var result = await _timeEntryRepository.DeleteTimeEntry(id);
             if (result is null)
             {
                 return null;

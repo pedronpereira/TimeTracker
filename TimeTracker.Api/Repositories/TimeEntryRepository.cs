@@ -11,16 +11,6 @@ namespace TimeTracker.Api.Repositories
             _context = context;
         }
 
-        private static Dictionary<string, TimeEntry> _timeEntries = new List<TimeEntry>
-        {
-            new TimeEntry
-            {
-                Id = Guid.NewGuid().ToString(),
-                Project = "Time Tracker App",
-                End = DateTime.Now.AddHours(1),
-            }
-        }.ToDictionary(x => x.Id, x => x);
-
         public async Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
         {
             timeEntry.Id = Guid.NewGuid().ToString();
@@ -30,14 +20,18 @@ namespace TimeTracker.Api.Repositories
             return await _context.TimeEntries.ToListAsync();
         }
 
-        public List<TimeEntry>? DeleteTimeEntry(Guid id)
+        public async Task<List<TimeEntry>?> DeleteTimeEntry(Guid id)
         {
-            if (!_timeEntries.ContainsKey(id.ToString()))
+            var dbTimeEntry = await _context.TimeEntries.FindAsync(id.ToString());
+            if (dbTimeEntry is null)
             {
                 return null;
             }
-            _timeEntries.Remove(id.ToString());
-            return _timeEntries.Values.ToList();
+
+            _context.TimeEntries.Remove(dbTimeEntry);
+
+            await _context.SaveChangesAsync();
+            return await GetAllTimeEntries();
         }
 
         public async Task<List<TimeEntry>> GetAllTimeEntries()

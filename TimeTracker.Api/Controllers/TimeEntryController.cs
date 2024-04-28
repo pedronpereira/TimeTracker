@@ -49,9 +49,9 @@ namespace TimeTracker.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<List<TimeEntryResponse>> DeleteTimeEntry(Guid id)
+        public async Task<ActionResult<List<TimeEntryResponse>>> DeleteTimeEntry(Guid id)
         {
-            var result = _timeEntryService.DeleteTimeEntry(id);
+            var result = await _timeEntryService.DeleteTimeEntry(id);
             if (result is null)
             {
                 return NotFound("TimeEntry with the given ID was not found");
