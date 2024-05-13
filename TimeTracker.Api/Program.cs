@@ -14,6 +14,8 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 var app = builder.Build();
 
@@ -39,6 +41,5 @@ void ConfigureMapster()
     TypeAdapterConfig<Project, ProjectResponse>.NewConfig()
         .Map(dest => dest.Description, src => src.ProjectDetails != null ? src.ProjectDetails.Description : null)
         .Map(dest => dest.StartDate, src => src.ProjectDetails != null ? src.ProjectDetails.StartDate.ToString() : null)
-        .Map(dest => dest.StartDate, src => src.ProjectDetails != null ? src.ProjectDetails.EndDate.ToString() : null);
-        
+        .Map(dest => dest.StartDate, src => src.ProjectDetails != null ? src.ProjectDetails.EndDate.ToString() : null);        
 }
