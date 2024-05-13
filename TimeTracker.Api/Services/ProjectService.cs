@@ -16,5 +16,15 @@ namespace TimeTracker.Api.Services
             var result = await _projectRepository.GetAllProjects();
             return result.Adapt<List<ProjectResponse>>();
         }
+
+        public async Task<ProjectResponse?> GetProjectById(Guid id)
+        {
+            var result = await _projectRepository.GetProjectById(id);
+            if (result is null) 
+            {
+                return null;
+            }
+            return result.Adapt<ProjectResponse>();
+        }
     }
 }

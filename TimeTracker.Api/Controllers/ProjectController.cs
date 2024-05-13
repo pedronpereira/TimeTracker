@@ -19,5 +19,16 @@ namespace TimeTracker.Api.Controllers
         {
             return Ok(await _projectService.GetAllProjects());
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProjectResponse>> GetProject(Guid id)
+        {
+            var result = await _projectService.GetProjectById(id);
+            if (result == null)
+            {
+                return NotFound("Project with the given ID was not found");
+            }
+            return Ok(result);
+        }
     }
 }

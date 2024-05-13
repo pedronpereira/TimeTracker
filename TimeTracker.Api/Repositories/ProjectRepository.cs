@@ -1,4 +1,5 @@
 ﻿
+
 namespace TimeTracker.Api.Repositories
 {
     public class ProjectRepository : IProjectRepository
@@ -15,6 +16,13 @@ namespace TimeTracker.Api.Repositories
             return await _context.Projects
                 .Include(p => p.ProjectDetails)
                 .ToListAsync();
+        }
+
+        public async Task<Project?> GetProjectById(Guid id)
+        {
+            return await _context.Projects
+                .Include(p => p.ProjectDetails)
+                .FirstOrDefaultAsync(p => p.Id == id.ToString());
         }
     }
 }
