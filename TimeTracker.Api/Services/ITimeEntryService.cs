@@ -9,5 +9,7 @@
         Task<List<TimeEntryResponse>?> UpdateTimeEntry(Guid id, TimeEntryUpdateRequest timeEntryRequest);
         Task<List<TimeEntryResponse>?> DeleteTimeEntry(Guid id);
         Task<TimeEntryResponse?> GetTimeEntryById(Guid id);
+
+        Task<List<TimeEntryByProjectResponse>> GetTimeEntriesByProject(Guid id);
     }
 }

@@ -7,5 +7,6 @@
         Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry);
         Task<List<TimeEntry>?> UpdateTimeEntry(Guid id, TimeEntry timeEntry);
         Task<List<TimeEntry>?> DeleteTimeEntry(Guid id);
+        Task<List<TimeEntry>?> GetTimeEntriesByProject(Guid id);
     }
 }

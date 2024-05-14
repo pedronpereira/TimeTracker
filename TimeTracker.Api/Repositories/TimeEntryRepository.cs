@@ -65,5 +65,13 @@ namespace TimeTracker.Api.Repositories
                 .Include(te => te.Project)
                 .FirstOrDefaultAsync(te => te.Id == id.ToString());
         }
+
+        public async Task<List<TimeEntry>?> GetTimeEntriesByProject(Guid id)
+        {
+            return await _context.TimeEntries
+                .Where(te => te.ProjectId == id.ToString())
+                .Include(te => te.Project)
+                .ToListAsync();
+        }
     }
 }

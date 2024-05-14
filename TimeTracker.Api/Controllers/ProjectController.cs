@@ -30,5 +30,33 @@ namespace TimeTracker.Api.Controllers
             }
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<List<ProjectResponse>>> CreateProject(ProjectCreateRequest request)
+        {
+            return Ok(await _projectService.CreateProject(request));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<ProjectResponse>>> UpdateProject(Guid id, ProjectUpdateRequest projectRequest)
+        {
+            var result = await _projectService.UpdateProject(id, projectRequest);
+            if (result is null)
+            {
+                return NotFound("Project with the given ID was not found");
+            }
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<ProjectResponse>>> DeleteProject(Guid id)
+        {
+            var result = await _projectService.DeleteProject(id);
+            if (result is null)
+            {
+                return NotFound("Project with the given ID was not found");
+            }
+            return Ok(result);
+        }
     }
 }
