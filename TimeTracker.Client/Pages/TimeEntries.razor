@@ -11,6 +11,7 @@
             <th>End</th>
             <th>Duration</th>
             <th>Project</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -19,15 +20,24 @@
             <tr>
                 <td>@timeEntry.Start</td>
                 <td>@timeEntry.End</td>
-                <td>@GetDuration(@timeEntry.Start, @timeEntry.End)}</td>
+                <td>@GetDuration(timeEntry.Start, timeEntry.End)</td>
                 <td>@timeEntry.Project.Name</td>
+                <td>
+                    <button class="btn btn-primary" 
+                        onclick="@(() => ShowProject(timeEntry.Project.Id))">
+                        Show Project
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
+<ProjectDetails ProjectId=@projectId/>
+
 @code {
     private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
+    string projectId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,5 +58,14 @@
         }
 
         return string.Empty;
+    }
+
+    private void ShowProject(string id)
+    {
+        if (projectId == id)
+            return;
+
+        projectId = id;
+        StateHasChanged();
     }
 }
