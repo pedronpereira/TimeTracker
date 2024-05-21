@@ -1,8 +1,14 @@
 ﻿@page "/timeentries"
-@inject HttpClient Http
+@inject ITimeEntryService TimeEntryService
+@implements IDisposable
+@inject NavigationManager NavigationManager
 
 <PageTitle>Time Entries</PageTitle>
 <h3>Time Entries</h3>
+
+<button class="btn btn-primary mb-2" @onclick="CreateTimeEntry">
+    Create Time Entry
+</button>
 
 <table>
     <thead>
@@ -12,10 +18,11 @@
             <th>Duration</th>
             <th>Project</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var timeEntry in timeEntries)
+        @foreach (var timeEntry in TimeEntryService.TimeEntries)
         {
             <tr>
                 <td>@timeEntry.Start</td>
@@ -28,6 +35,12 @@
                         Show Project
                     </button>
                 </td>
+                <td>
+                    <button class="btn btn-primary"
+                            onclick="@(() => EditTimeEntry(timeEntry.Id))">
+                        <i class="oi oi-pencil"></i>
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
@@ -36,16 +49,12 @@
 <ProjectDetails ProjectId=@projectId/>
 
 @code {
-    private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
-    string projectId;
+    string projectId = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
-        if (result != null)
-        {
-            timeEntries = result;
-        }
+        await TimeEntryService.GetTimeEntryiesByProject(projectId);
+        TimeEntryService.OnChange += StateHasChanged;
     }
 
     private string GetDuration(DateTime? start,  DateTime? end)
@@ -67,5 +76,21 @@
 
         projectId = id;
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        TimeEntryService.OnChange -= StateHasChanged;
+    }
+
+    private void CreateTimeEntry()
+    {
+        NavigationManager.NavigateTo("/timeentry");
+    }
+
+    private void EditTimeEntry(string id)
+    {
+        NavigationManager.NavigateTo($"/timeentry/{id}");
+
     }
 }
